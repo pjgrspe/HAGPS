@@ -1,0 +1,12 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.openOcdConfigs": [
+    "board/esp32-wroom-32.cfg"
+  ],
+  "idf.portWin": "COM3",
+  "idf.currentSetup": "c:\\ESP32\\idf\\v5.4\\esp-idf",
+  "idf.customExtraVars": {
+    "IDF_TARGET": "esp32"
+  },
+  "idf.flashType": "UART"
+}
