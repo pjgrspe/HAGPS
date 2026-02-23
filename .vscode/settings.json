@@ -3,7 +3,7 @@
   "idf.openOcdConfigs": [
     "board/esp32-wroom-32.cfg"
   ],
-  "idf.portWin": "COM3",
+  "idf.portWin": "COM9",
   "idf.currentSetup": "c:\\ESP32\\idf\\v5.4\\esp-idf",
   "idf.customExtraVars": {
     "IDF_TARGET": "esp32"
