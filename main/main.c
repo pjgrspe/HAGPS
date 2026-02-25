@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "nvs_flash.h"
@@ -11,8 +12,6 @@
 #elif DEVICE_ROLE == DEVICE_ROLE_ROVER
 #include "rover_espnow_receiver.h"
 #endif
-
-#define ESP_NOW_MAX_SIZE 250
 
 void app_main(void)
 {
@@ -29,61 +28,66 @@ void app_main(void)
     espnow_comm_init();
     uart_gnss_init();
 
-    uint8_t data[ESP_NOW_MAX_SIZE];
+    uint8_t data[512];
+    int rtcm_seen = 0;
+    
     while (1) {
         int len = uart_gnss_read(data, sizeof(data));
         if (len > 0) {
-            printf("Read %d bytes (hex): ", len);
+            // Check for RTCM (0xD3 = start of RTCM3)
             for (int i = 0; i < len; i++) {
-                printf("%02X ", data[i]);
+                if (data[i] == 0xD3) {
+                    if (!rtcm_seen) {
+                        rtcm_seen = 1;
+                        printf("\n*** SURVEY-IN COMPLETE - RTCM ACTIVE ***\n\n");
+                    }
+                    break;
+                }
             }
-            printf("\n");
+            
+            // Forward all data to rover immediately
             espnow_comm_send(data, len);
-        } else {
-            static int survey_counter = 0;
-            if (survey_counter % 20 == 0) {
-                printf("No GNSS data yet. Survey-In in progress...\n");
-            }
-            survey_counter++;
         }
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+        vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 
 #elif DEVICE_ROLE == DEVICE_ROLE_ROVER
-    printf("=== RTK ROVER - MONITORING MODE ===\n");
+    printf("=== RTK ROVER ===\n");
     rover_espnow_receiver_init();
 
-    uint8_t buf[ESP_NOW_MAX_SIZE];
-    uint8_t gnss_buf[256];
-    int fix_status = -1;
-    const char *fix_names[] = {"Invalid", "GPS", "DGPS", "PPS", "RTK Fixed", "RTK Float"};
-    int status_counter = 0;
+    static uint8_t gnss_buf[2048]; // Static to avoid stack overflow
+    uint8_t buf[256];
+    size_t gnss_len = 0;
+    int rtcm_count = 0;
+    int loop_count = 0;
     
     while (1) {
-        // Forward ESP-NOW data to ZED-F9P
+        // Receive RTCM from base and forward to ZED-F9P
         int len = rover_espnow_receive(buf, sizeof(buf));
         if (len > 0) {
-            printf("Received %d bytes over ESP-NOW, forwarding to GNSS...\n", len);
             rover_forward_to_gnss(buf, len);
-        }
-        
-        // Read ZED-F9P output to monitor fix status
-        int gnss_len = rover_uart_read(gnss_buf, sizeof(gnss_buf));
-        if (gnss_len > 0) {
-            int new_fix = rover_parse_gga_fix(gnss_buf, gnss_len);
-            if (new_fix >= 0 && new_fix != fix_status) {
-                fix_status = new_fix;
-                printf("\n*** FIX STATUS CHANGED: %s ***\n", 
-                       fix_status <= 5 ? fix_names[fix_status] : "Unknown");
+            rtcm_count++;
+            if (rtcm_count % 50 == 0) {
+                printf("[ROVER] RTCM: %d packets\n", rtcm_count);
             }
         }
         
-        // Print status periodically
-        if (++status_counter >= 100) {
-            status_counter = 0;
-            if (fix_status >= 0) {
-                printf("Current fix: %s\n", fix_status <= 5 ? fix_names[fix_status] : "Unknown");
+        // Read GPS data from ZED-F9P
+        int read_len = rover_uart_read(gnss_buf + gnss_len, sizeof(gnss_buf) - gnss_len);
+        if (read_len > 0) {
+            gnss_len += read_len;
+            
+            // Shift buffer if getting full
+            if (gnss_len > sizeof(gnss_buf) - 256) {
+                memmove(gnss_buf, gnss_buf + 1024, gnss_len - 1024);
+                gnss_len -= 1024;
             }
+        }
+        
+        // Display GPS info every ~2 seconds
+        if (++loop_count >= 200) {
+            loop_count = 0;
+            rover_display_gga(gnss_buf, gnss_len);
         }
         
         vTaskDelay(10 / portTICK_PERIOD_MS);

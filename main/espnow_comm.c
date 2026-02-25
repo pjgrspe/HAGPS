@@ -8,7 +8,10 @@ static const char *TAG = "ESPNOW_COMM";
 static uint8_t broadcast_mac[6] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
 
 static void espnow_send_cb(const uint8_t *mac_addr, esp_now_send_status_t status) {
-    ESP_LOGI(TAG, "ESP-NOW send status: %s", status == ESP_NOW_SEND_SUCCESS ? "Success" : "Fail");
+    // Silent - only log failures
+    if (status != ESP_NOW_SEND_SUCCESS) {
+        ESP_LOGE(TAG, "ESP-NOW send failed");
+    }
 }
 
 void espnow_comm_init(void) {

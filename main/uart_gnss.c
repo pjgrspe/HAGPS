@@ -15,6 +15,6 @@ void uart_gnss_init(void) {
 }
 
 int uart_gnss_read(uint8_t *data, size_t max_len) {
-    int len = uart_read_bytes(UART_GNSS_PORT_NUM, data, max_len, 100 / portTICK_PERIOD_MS);
+    int len = uart_read_bytes(UART_GNSS_PORT_NUM, data, max_len, 10 / portTICK_PERIOD_MS);
     return len;
 }
