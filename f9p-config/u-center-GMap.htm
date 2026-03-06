@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+    <!-- this file was created using the export function of u-center by u-blox AG, Switzerland. -->
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <title>u-center generated Google Map</title>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript">
+        //<![CDATA[
+            function Format(v)
+            {
+                var s = "";
+                if (v < 0) { v = -v; s = "-"; }
+                var i = Math.floor(v);
+                var f = Math.floor((v-i)*1e6);
+                var fs = f.toString();
+                while (fs.length < 6)
+                    fs = "0" + fs;
+                return s + i.toString() + "." + fs;
+            }
+            function MouseMove(p)
+            {
+                window.status = "Lat: " + Format(p.latLng.lat()) + " Lon: " + Format(p.latLng.lng());
+            }
+            var MAX_ZOOM = 21;
+            var GLOBE_WIDTH = 256;
+            function Load()
+            {
+                // create map
+                var map = new google.maps.Map(document.getElementById('div'),
+                {
+                    center: new google.maps.LatLng( 47.285208,  8.565256 ),
+                    zoom: 13,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    draggableCursor: 'crosshair',
+                    overviewMapControl: true
+                });
+                
+                {
+                    var i;
+                    var j;
+                    _mSvgEnabled = true;
+                    _mSvgForced = true;
+                    
+                    // add listener 
+                    google.maps.event.addListener(map, 'mousemove', MouseMove);
+                    
+                    // track is a two dimensional array with lat/long points
+                    var t = [
+                     [  new google.maps.LatLng( 15.181744,120.527050),
+                        new google.maps.LatLng( 15.181734,120.527049),
+                        new google.maps.LatLng( 15.181721,120.527050),
+                        new google.maps.LatLng( 15.181714,120.527055),
+                        new google.maps.LatLng( 15.181707,120.527061),
+                        new google.maps.LatLng( 15.181700,120.527069),
+                        new google.maps.LatLng( 15.181696,120.527075),
+                        new google.maps.LatLng( 15.181692,120.527081),
+                        new google.maps.LatLng( 15.181690,120.527085),
+                        new google.maps.LatLng( 15.181687,120.527087),
+                        new google.maps.LatLng( 15.181684,120.527090),
+                        new google.maps.LatLng( 15.181681,120.527092),
+                        new google.maps.LatLng( 15.181678,120.527094),
+                        new google.maps.LatLng( 15.181676,120.527097),
+                        new google.maps.LatLng( 15.181674,120.527101),
+                        new google.maps.LatLng( 15.181672,120.527104),
+                        new google.maps.LatLng( 15.181670,120.527107),
+                        new google.maps.LatLng( 15.181668,120.527111),
+                        new google.maps.LatLng( 15.181665,120.527113),
+                        new google.maps.LatLng( 15.181661,120.527115),
+                        new google.maps.LatLng( 15.181658,120.527117),
+                        new google.maps.LatLng( 15.181655,120.527119),
+                        new google.maps.LatLng( 15.181653,120.527121),
+                        new google.maps.LatLng( 15.181651,120.527123),
+                        new google.maps.LatLng( 15.181650,120.527126),
+                        new google.maps.LatLng( 15.181649,120.527129),
+                        new google.maps.LatLng( 15.181648,120.527132),
+                        new google.maps.LatLng( 15.181647,120.527134),
+                        new google.maps.LatLng( 15.181646,120.527136),
+                        new google.maps.LatLng( 15.181645,120.527139),
+                        new google.maps.LatLng( 15.181644,120.527141),
+                        new google.maps.LatLng( 15.181642,120.527143),
+                        new google.maps.LatLng( 15.181641,120.527145),
+                        new google.maps.LatLng( 15.181640,120.527147),
+                        new google.maps.LatLng( 15.181639,120.527149),
+                        new google.maps.LatLng( 15.181638,120.527151),
+                        new google.maps.LatLng( 15.181638,120.527151),
+                        new google.maps.LatLng( 15.181638,120.527153),
+                        new google.maps.LatLng( 15.181639,120.527153),
+                        new google.maps.LatLng( 15.181639,120.527156),
+                        new google.maps.LatLng( 15.181640,120.527157),
+                        new google.maps.LatLng( 15.181640,120.527158),
+                        new google.maps.LatLng( 15.181640,120.527160),
+                        new google.maps.LatLng( 15.181640,120.527161),
+                        new google.maps.LatLng( 15.181640,120.527163),
+                        new google.maps.LatLng( 15.181640,120.527163),
+                        new google.maps.LatLng( 15.181641,120.527164),
+                        new google.maps.LatLng( 15.181641,120.527164),
+                        new google.maps.LatLng( 15.181641,120.527165),
+                        new google.maps.LatLng( 15.181641,120.527165),
+                        new google.maps.LatLng( 15.181641,120.527165),
+                        new google.maps.LatLng( 15.181641,120.527165),
+                        new google.maps.LatLng( 15.181640,120.527166),
+                        new google.maps.LatLng( 15.181640,120.527167),
+                        new google.maps.LatLng( 15.181640,120.527168),
+                        new google.maps.LatLng( 15.181639,120.527169),
+                        new google.maps.LatLng( 15.181638,120.527170),
+                        new google.maps.LatLng( 15.181638,120.527171),
+                        new google.maps.LatLng( 15.181638,120.527172),
+                        new google.maps.LatLng( 15.181638,120.527173),
+                        new google.maps.LatLng( 15.181638,120.527173),
+                        new google.maps.LatLng( 15.181638,120.527173),
+                        new google.maps.LatLng( 15.181637,120.527173),
+                        new google.maps.LatLng( 15.181637,120.527175),
+                        new google.maps.LatLng( 15.181636,120.527176),
+                        new google.maps.LatLng( 15.181637,120.527176),
+                        new google.maps.LatLng( 15.181635,120.527176),
+                        new google.maps.LatLng( 15.181636,120.527176),
+                        new google.maps.LatLng( 15.181636,120.527175),
+                        new google.maps.LatLng( 15.181636,120.527176),
+                        new google.maps.LatLng( 15.181636,120.527177),
+                        new google.maps.LatLng( 15.181636,120.527177),
+                        new google.maps.LatLng( 15.181636,120.527178),
+                        new google.maps.LatLng( 15.181636,120.527178),
+                        new google.maps.LatLng( 15.181635,120.527179),
+                        new google.maps.LatLng( 15.181634,120.527180),
+                        new google.maps.LatLng( 15.181633,120.527180),
+                        new google.maps.LatLng( 15.181632,120.527181),
+                        new google.maps.LatLng( 15.181634,120.527179),
+                        new google.maps.LatLng( 15.225608,120.573245),
+                        new google.maps.LatLng( 15.225608,120.573245),
+                        new google.maps.LatLng( 15.225608,120.573245),
+                        new google.maps.LatLng( 15.225608,120.573245),
+                        new google.maps.LatLng( 15.225608,120.573245),
+                        new google.maps.LatLng( 15.225608,120.573245) ]
+                    ];
+                    
+                    // find bounding box
+                    var b = new google.maps.LatLngBounds;
+                    for (i = 0; i < t.length; i ++)
+                    {
+                        for (j = 0; j < t[i].length; j ++)
+                        {
+                            b.extend(t[i][j]);
+                        }
+                        
+                        new google.maps.Polyline(
+                        {
+                            map: map,
+                            path: t[i],
+                            strokeColor: '#FF00FF',
+                            strokeOpactiy: 0.6,
+                            strokeWeight: 3
+                        });
+                    }
+                    
+                    // add the start and the end point
+                    new google.maps.Marker(
+                    {
+                        map: map,
+                        position: t[0][0],
+                        title: 'Start'
+                    });
+                    new google.maps.Marker(
+                    {
+                        map: map,
+                        position: t[t.length-1][t[t.length-1].length-1],
+                        title: 'End'
+                    });
+                    // create map fitted to the track
+                    var ne = b.getNorthEast();
+                    var sw = b.getSouthWest();
+                    
+                    // calculate the zoom level
+                    var west = sw.lng();
+                    var east = ne.lng();
+                    var angle = east - west;
+                    if (angle < 0) 
+                    {
+                        angle += 360;
+                    }
+                    var zoom = Math.round(Math.log(960 * 360 / angle / GLOBE_WIDTH) / Math.LN2);
+                    zoom = Math.min(MAX_ZOOM, zoom);
+                    
+                    // set center and zoom level
+                    map.setCenter(new google.maps.LatLng((ne.lat() + sw.lat())/2, (ne.lng() + sw.lng())/2));
+                    map.setZoom(zoom-1);
+                }
+            }
+        //]]>
+        </script>
+    </head>
+    <body onload="Load();" style="margin:0px 0px 0px 0px; overflow:hidden;">
+        <div id="div"  style="position:absolute; top:0px; left:0px; width:100%; height:100%;"></div>
+    </body>
+</html>

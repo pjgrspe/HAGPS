@@ -7,7 +7,7 @@
 #include "freertos/queue.h"
 #include <string.h>
 
-#define MQTT_QUEUE_SIZE 10
+#define MQTT_QUEUE_SIZE 100
 
 typedef struct {
     uint8_t data[512];

@@ -28,12 +28,18 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base,
     }
 }
 
-void wifi_init_sta(const char *ssid, const char *password)
+static bool initialized = false;
+
+bool wifi_init_sta(const char *ssid, const char *password, int timeout_ms)
 {
     wifi_event_group = xEventGroupCreate();
-    
-    esp_netif_init();
-    esp_netif_create_default_wifi_sta();
+    connected = 0;
+
+    if (!initialized) {
+        esp_netif_init();
+        esp_netif_create_default_wifi_sta();
+        initialized = true;
+    }
 
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     esp_wifi_init(&cfg);
@@ -62,12 +68,32 @@ void wifi_init_sta(const char *ssid, const char *password)
     esp_wifi_start();
 
     ESP_LOGI(TAG, "Connecting to WiFi SSID: %s", ssid);
-    
-    // Wait for connection
-    xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
-    ESP_LOGI(TAG, "WiFi Connected Successfully");
+
+    /* Wait for connection with timeout */
+    TickType_t wait = (timeout_ms > 0) ? pdMS_TO_TICKS(timeout_ms) : portMAX_DELAY;
+    EventBits_t bits = xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT,
+                                           pdFALSE, pdTRUE, wait);
+
+    if (bits & WIFI_CONNECTED_BIT) {
+        ESP_LOGI(TAG, "WiFi connected successfully");
+        return true;
+    }
+
+    ESP_LOGW(TAG, "WiFi connection timed out");
+    return false;
 }
 
-int wifi_is_connected(void) {
+bool wifi_is_connected(void) {
     return connected;
+}
+
+void wifi_stop(void) {
+    esp_wifi_disconnect();
+    esp_wifi_stop();
+    esp_wifi_deinit();
+    connected = 0;
+    if (wifi_event_group) {
+        vEventGroupDelete(wifi_event_group);
+        wifi_event_group = NULL;
+    }
 }
